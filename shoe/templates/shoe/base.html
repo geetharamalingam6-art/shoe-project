@@ -1,0 +1,574 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StepUp.in | Premium Footwear & Sneakers{% endblock %}</title>
+    
+    <!-- Google Fonts: Libre Baskerville -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS & Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{% static 'shoe/css/style.css' %}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- 1. HEADER (Dark Slate Gray #2F4F4F) -->
+    <header class="header-navbar">
+        <div class="header-left-group">
+            <!-- StepUp logo from the static images folder -->
+            <a href="{% url 'home' %}" class="brand-logo" title="StepUp.in">
+                <img src="{% static 'shoe/images/logo.jpg' %}?v=2" alt="StepUp footwear logo">
+            </a>
+
+            <!-- Long Rounded White Search Input -->
+            <div class="search-container">
+                <form action="{% url 'search' %}" method="GET" class="m-0">
+                    <div class="search-input-wrapper">
+                        <i class="bi bi-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            name="q" 
+                            id="search-input" 
+                            class="search-input" 
+                            placeholder="Search here" 
+                            value="{{ query|default:'' }}"
+                            autocomplete="off"
+                        >
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Toggle -->
+        <button class="mobile-nav-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Right Navigation Links -->
+        <ul class="header-nav-links" id="header-nav-links">
+            <li class="{% if active_page == 'home' %}active{% endif %}">
+                <a href="{% url 'home' %}" class="{% if active_page == 'home' %}highlight-home{% endif %}">Home</a>
+            </li>
+            <li class="{% if active_page == 'about' %}active{% endif %}">
+                <a href="{% url 'about' %}">About Us</a>
+            </li>
+            <li class="{% if active_page == 'contact' %}active{% endif %}">
+                <a href="{% url 'contact' %}">Contact Us</a>
+            </li>
+            <li class="{% if active_page == 'login' %}active{% endif %}">
+                <a href="{% url 'login' %}">Log in</a>
+            </li>
+            <li class="{% if active_page == 'orders' %}active{% endif %}">
+                <a href="{% url 'my_orders' %}">My Orders</a>
+            </li>
+            <li class="{% if active_page == 'cart' %}active{% endif %}">
+                <a href="{% url 'cart' %}" class="cart-link">
+                    <span>Cart</span>
+                    <i class="bi bi-cart3 cart-icon"></i>
+                    <span class="cart-badge{% if not cart_count %} cart-badge-empty{% endif %}">{{ cart_count|default:"0" }}</span>
+                </a>
+            </li>
+        </ul>
+    </header>
+
+    <!-- 2. BRAND NAME (StepUp.in centered in bold serif text) -->
+    <div class="brand-title-section">
+        <h1 class="brand-title-text">
+            <a href="{% url 'home' %}">StepUp.in</a>
+        </h1>
+    </div>
+
+    <!-- 3. CATEGORY NAVIGATION & THIN GREY LINES -->
+    <nav class="category-nav-wrapper">
+        <hr class="nav-divider-line">
+        <ul class="category-nav-list">
+            <!-- WOMENS -->
+            <li class="category-nav-item">
+                <a href="{% url 'category' 'womens' %}" class="{% if active_page == 'womens' %}active-category{% endif %}">Womens</a>
+                <div class="mega-menu-dropdown">
+                    <div class="mega-menu-col">
+                        <h6>New Arrivals</h6>
+                        <ul><li><a href="{% url 'category' 'womens' %}">View all</a></li></ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Sandals</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'womens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Flat</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Flip Flop</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Slider</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Strappy</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Trainers</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'womens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Chunky</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Lace Up</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Slip On</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Canvas</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'womens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Lace Up</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Slip On</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Shoes</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'womens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Ballerina</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Brogue</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Flat</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Heel</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Leather</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Party</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">School</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Safety Footwear</h6>
+                        <ul><li><a href="{% url 'category' 'womens' %}">View all</a></li></ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Boots</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'womens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Ankle</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Biker</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Heel</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Knee</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">High</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Lace up</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Leather</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Slippers</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'womens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Easy Fasten</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Full</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Moccasin</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Mule</a></li>
+                            <li><a href="{% url 'category' 'womens' %}">Slipper Boots</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- MENS -->
+            <li class="category-nav-item">
+                <a href="{% url 'category' 'mens' %}" class="{% if active_page == 'mens' %}active-category{% endif %}">Mens</a>
+                <div class="mega-menu-dropdown">
+                    <div class="mega-menu-col">
+                        <h6>New Arrivals</h6>
+                        <ul><li><a href="{% url 'category' 'mens' %}">View all</a></li></ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Sandals</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'mens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Flat</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Flip Flop</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Slider</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Strappy</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Trainers</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'mens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Chunky</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Lace Up</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Slip On</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Canvas</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'mens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Lace Up</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Slip On</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Shoes</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'mens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Oxford</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Loafers</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Brogue</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Safety Footwear</h6>
+                        <ul><li><a href="{% url 'category' 'mens' %}">View all</a></li></ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Boots</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'mens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Chelsea</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Chukka</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Work</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Slippers</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'mens' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Full</a></li>
+                            <li><a href="{% url 'category' 'mens' %}">Moccasin</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- KIDS -->
+            <li class="category-nav-item">
+                <a href="{% url 'category' 'kids' %}" class="{% if active_page == 'kids' %}active-category{% endif %}">Kids</a>
+                <div class="mega-menu-dropdown kids-mega-menu">
+                    <div class="mega-menu-col">
+                        <h6>Girls</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'kids' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Sandals</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Canvas</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Trainers</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Shoes</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Boots</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Wellies</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Slippers</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Girls Trending</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'kids' %}">Save</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">New arrivals</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Character footwear</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Online exclusive</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Back to school</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Back to schools</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'kids' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Girls school shoes</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Boys school shoes</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Canvas</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'kids' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Lace Up</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Slip On</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Boys</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'kids' %}">View all</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Sandals</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Canvas</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Trainers</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Shoes</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Boots</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Wellies</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Slippers</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Safety Footwear</h6>
+                        <ul><li><a href="{% url 'category' 'kids' %}">View all</a></li></ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Boys Trending</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'kids' %}">SAVE</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">New arrivals</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Character exclusive</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Online exclusive</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Back to school</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Slippers</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'kids' %}">Boys slippers</a></li>
+                            <li><a href="{% url 'category' 'kids' %}">Girls slippers</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- BRANDS -->
+            <li class="category-nav-item">
+                <a href="{% url 'category' 'brands' %}" class="{% if active_page == 'brands' %}active-category{% endif %}">Brands</a>
+                <div class="mega-menu-dropdown brands-mega-menu">
+                    <div class="mega-menu-col">
+                        <h6>B</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Barbie</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Beckett</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Bluey</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>C</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Comfort Plus</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Comfy steps</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Crocs</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Cushion Walk</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>D</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Disney frozen</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Disney stitch</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Divaz</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Dunlop</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>H</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Heart</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Heavenly feet</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Hobos</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Hush puppies</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>K</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Kickers</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Krush</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>M</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Marco</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Lozzi</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Marvel</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Maya</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">grace</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>P</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Paw patrol</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Pokemon</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>S</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Skechers</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Soft line</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Softlites</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Spider-man</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Stone creek</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Super mario</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>T</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'brands' %}">Totes isotoner</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Trespass</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Truffle</a></li>
+                            <li><a href="{% url 'category' 'brands' %}">Trux</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- OFFERS -->
+            <li class="category-nav-item">
+                <a href="{% url 'category' 'offers' %}" class="{% if active_page == 'offers' %}active-category{% endif %}">Offers</a>
+                <div class="mega-menu-dropdown offers-mega-menu">
+                    <div class="mega-menu-col">
+                        <h6>Discounts</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'offers' %}" class="fw-bold text-danger">Special SAVE</a></li>
+                            <li><a href="{% url 'category' 'offers' %}">Clearance Outlet</a></li>
+                            <li><a href="{% url 'category' 'offers' %}">Under ₹999 Deals</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Multi-Buy Deals</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'offers' %}">2 Pairs for ₹1,000</a></li>
+                            <li><a href="{% url 'category' 'offers' %}">Buy 1 Get 1 50% Off</a></li>
+                            <li><a href="{% url 'category' 'offers' %}">Combo Discounts</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>Seasonal Sale</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'offers' %}">Boots Sale</a></li>
+                            <li><a href="{% url 'category' 'offers' %}">Summer Sandals Fest</a></li>
+                            <li><a href="{% url 'category' 'offers' %}">Sneaker Drops</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-menu-col">
+                        <h6>All Deals</h6>
+                        <ul>
+                            <li><a href="{% url 'category' 'offers' %}" class="fw-bold text-success">View All Offers &rarr;</a></li>
+                            <li><a href="{% url 'category' 'offers' %}">Student Discount</a></li>
+                            <li><a href="{% url 'category' 'offers' %}">Newsletter Voucher</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <hr class="nav-divider-line">
+    </nav>
+
+    <!-- Notification Messages -->
+    {% if messages %}
+    <div class="container mt-2">
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content Block -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-main">
+        <div class="footer-container">
+            <!-- 1. Contact Us -->
+            <div class="footer-col footer-contact">
+                <h4>Contact Us</h4>
+                <div class="footer-contact-details">
+                    <p>We'd love to hear from you!</p>
+                    <p>Landline : XXXXXXXXXX</p>
+                    <p>WhatsApp : +91XXXXXXXXXX</p>
+                    <p>Email : stepup@gmail.com</p>
+                    <p>Address : 2/38, yyyyyyyyyyy<br>Tenkasi,Tamilnadu ,India.</p>
+                </div>
+            </div>
+
+            <!-- 2. Shop (Bullet List) -->
+            <div class="footer-col footer-shop">
+                <h4>Shop</h4>
+                <ul class="footer-bullet-list">
+                    <li><a href="{% url 'category' 'womens' %}">New in</a></li>
+                    <li><a href="{% url 'category' 'womens' %}">Women</a></li>
+                    <li><a href="{% url 'category' 'mens' %}">Men</a></li>
+                    <li><a href="{% url 'category' 'brands' %}">Accessories</a></li>
+                    <li><a href="{% url 'category' 'womens' %}">Heels</a></li>
+                    <li><a href="{% url 'about' %}">About us</a></li>
+                </ul>
+            </div>
+
+            <!-- 3. Info (Bullet List) -->
+            <div class="footer-col footer-info">
+                <h4>Info</h4>
+                <ul class="footer-bullet-list">
+                    <li><a href="{% url 'search' %}">Search</a></li>
+                    <li><a href="{% url 'contact' %}">Return & Exchange Policy</a></li>
+                    <li><a href="{% url 'contact' %}">Privacy Policy</a></li>
+                    <li><a href="{% url 'contact' %}">Terms of Service</a></li>
+                    <li><a href="{% url 'contact' %}">Shipping Policy</a></li>
+                    <li><a href="{% url 'contact' %}">Blogs</a></li>
+                </ul>
+            </div>
+
+            <!-- 4. Social Media (Real Brand Icons) -->
+            <div class="footer-col footer-social">
+                <h4>Social Media</h4>
+                <div class="footer-social-icons">
+                    <!-- Real Facebook Icon -->
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon-badge" title="Facebook">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#1877F2"/>
+                            <path d="M21.5 16.5H18V28H13.5V16.5H11V12.5H13.5V9.5C13.5 7.015 15.018 5 18.5 5H21.5V9H19.5C18.395 9 18 9.605 18 10.5V12.5H21.5L21.5 16.5Z" fill="white"/>
+                        </svg>
+                    </a>
+                    <!-- Real Instagram Icon -->
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon-badge" title="Instagram">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <defs>
+                                <radialGradient id="igGradFooter" cx="20%" cy="110%" r="130%">
+                                    <stop offset="0%" stop-color="#FFDD55"/>
+                                    <stop offset="15%" stop-color="#FFDD55"/>
+                                    <stop offset="50%" stop-color="#FF543E"/>
+                                    <stop offset="70%" stop-color="#C837AB"/>
+                                    <stop offset="100%" stop-color="#3771C8"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="32" height="32" rx="7" fill="url(#igGradFooter)"/>
+                            <path d="M16 11.5C13.515 11.5 11.5 13.515 11.5 16C11.5 18.485 13.515 20.5 16 20.5C18.485 20.5 20.5 18.485 20.5 16C20.5 13.515 18.485 11.5 16 11.5ZM16 19C14.343 19 13 17.657 13 16C13 14.343 14.343 13 16 13C17.657 13 19 14.343 19 16C19 17.657 17.657 19 16 19ZM21.5 11.25C21.5 11.664 21.164 12 20.75 12C20.336 12 20 11.664 20 11.25C20 10.836 20.336 10.5 20.75 10.5C21.164 10.5 21.5 10.836 21.5 11.25Z" fill="white"/>
+                            <rect x="7" y="7" width="18" height="18" rx="5" stroke="white" stroke-width="2"/>
+                        </svg>
+                    </a>
+                    <!-- Real Twitter / X Icon -->
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-icon-badge" title="Twitter">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="6" fill="#1DA1F2"/>
+                            <path d="M24 10.8c-.7.3-1.4.5-2.2.6.8-.5 1.4-1.2 1.7-2.1-.7.4-1.6.8-2.4 1-.7-.8-1.7-1.3-2.8-1.3-2.1 0-3.9 1.8-3.9 3.9 0 .3 0 .6.1.9-3.3-.2-6.2-1.7-8.1-4.1-.3.6-.5 1.2-.5 1.9 0 1.3.7 2.5 1.8 3.2-.6 0-1.2-.2-1.8-.5v.1c0 1.9 1.3 3.4 3.1 3.8-.3.1-.7.1-1 .1-.2 0-.5 0-.7-.1.5 1.6 2 2.7 3.7 2.7-1.4 1.1-3.1 1.7-5 1.7-.3 0-.7 0-1-.1 1.8 1.1 3.8 1.8 6 1.8 7.2 0 11.2-6 11.2-11.2v-.5c.7-.6 1.4-1.3 1.9-2.1z" fill="white"/>
+                        </svg>
+                    </a>
+                    <!-- Real Meta Icon -->
+                    <a href="https://meta.com" target="_blank" rel="noopener noreferrer" class="social-icon-badge" title="Meta">
+                        <svg width="34" height="28" viewBox="0 0 36 28" fill="none">
+                            <path d="M35.6 13.8c-.4-4.8-4-8.8-9.1-8.8-3.4 0-6.2 1.8-8.5 4.5C15.7 6.8 12.9 5 9.5 5 4.4 5 .8 9 0 13.8c-.8 5.4 3 10.2 8.5 10.2 3.8 0 6.8-2.1 9.5-5.3 2.7 3.2 5.7 5.3 9.5 5.3 5.5 0 9.3-4.8 8.1-10.2zm-26.1 7.2c-3.6 0-6.5-3.1-6.5-7s2.9-7 6.5-7c2.7 0 4.8 1.6 6.8 4.2-2 2.6-4.1 4.2-6.8 4.2zm18 0c-2.7 0-4.8-1.6-6.8-4.2 2-2.6 4.1-4.2 6.8-4.2 3.6 0 6.5 3.1 6.5 7s-2.9 7-6.5 7z" fill="#0081FB"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 5. Lets stay in touch ! -->
+            <div class="footer-col footer-newsletter">
+                <h4>Lets stay in touch !</h4>
+                <p class="newsletter-desc">Sign up for exclusive offers, original stories, events and more.</p>
+                <label class="newsletter-label" for="footer-email">Email id</label>
+                <form class="newsletter-form-block" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+                    <input type="email" id="footer-email" class="footer-email-input" placeholder="Enter your email" required autocomplete="email">
+                    <button type="submit" class="footer-subscribe-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 StepUp.in. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Interactive JS -->
+    <script src="{% static 'shoe/js/script.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

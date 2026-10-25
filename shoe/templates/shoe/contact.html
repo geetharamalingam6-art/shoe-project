@@ -1,0 +1,76 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - StepUp.in{% endblock %}
+
+{% block content %}
+<div class="section-container my-5" style="font-family: var(--font-serif);">
+    <!-- Top Contact Section: Left text, Right image -->
+    <div class="row align-items-center mb-5 g-4">
+        <div class="col-lg-5">
+            <h2 class="fw-bold mb-4" style="font-size: 2.2rem; color: #111;">Contact Us</h2>
+            
+            <div class="mb-4">
+                <h4 class="fw-bold mb-2" style="font-size: 1.25rem; color: #111;">For Online Orders</h4>
+                <p class="mb-1 text-muted" style="font-family: var(--font-sans); font-size: 0.95rem;">Inquiry/Complanit</p>
+                <p class="fw-bold text-dark fs-5 mb-3" style="font-family: var(--font-sans);">9976357250</p>
+            </div>
+
+            <div style="font-family: var(--font-sans);">
+                <p class="mb-1 text-muted" style="font-size: 0.95rem;">Any other queries</p>
+                <p class="fw-bold text-dark mb-1">9976357250</p>
+                <p class="fw-bold text-dark mb-2">9976357250</p>
+                <p class="text-muted mb-2" style="font-size: 0.95rem;">10 AM-7.00 PM</p>
+                <p class="text-dark">Email: <a href="mailto:customercarestepup.in@gmail.com" class="text-decoration-underline text-dark">customercarestepup.in@gmail.com</a></p>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.08); background: #f8f9fa;">
+                <img src="{% static 'shoe/images/hero_brands.jpg' %}" alt="StepUp Footwear Collection" class="img-fluid w-100" style="height: 380px; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80';">
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5" style="border-color: #d1d5db;">
+
+    <!-- Enquiry Form Section -->
+    <div class="mx-auto" style="max-width: 850px;">
+        <h2 class="fw-bold mb-4" style="font-size: 2rem; color: #111;">Enquiry Form</h2>
+        
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}" role="alert" style="font-family: var(--font-sans);">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="name" class="form-label fw-bold" style="font-size: 1.05rem;">Name</label>
+                <input type="text" class="form-control form-control-lg rounded-2 border-dark" id="name" name="name" value="{{ form_data.name|default:'' }}" required style="font-family: var(--font-sans); background-color: #fff;">
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <label for="email" class="form-label fw-bold" style="font-size: 1.05rem;">Email</label>
+                    <input type="email" class="form-control form-control-lg rounded-2 border-dark" id="email" name="email" value="{{ form_data.email|default:'' }}" required style="font-family: var(--font-sans); background-color: #fff;">
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label fw-bold" style="font-size: 1.05rem;">Phone</label>
+                    <input type="tel" class="form-control form-control-lg rounded-2 border-dark" id="phone" name="phone" value="{{ form_data.phone|default:'' }}" required style="font-family: var(--font-sans); background-color: #fff;">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="message" class="form-label fw-bold" style="font-size: 1.05rem;">Message</label>
+                <textarea class="form-control rounded-2 border-dark" id="message" name="message" rows="6" required style="font-family: var(--font-sans); background-color: #fff;">{{ form_data.message|default:'' }}</textarea>
+            </div>
+
+            <button type="submit" class="btn px-5 py-3 text-white fw-bold rounded-2 shadow-sm" style="background-color: #2F4F4F; font-family: var(--font-sans); font-size: 1.1rem; transition: background-color 0.2s ease;">Send</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

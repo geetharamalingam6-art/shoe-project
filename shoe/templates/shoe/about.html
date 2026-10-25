@@ -1,0 +1,85 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}About Us - StepUp.in{% endblock %}
+
+{% block content %}
+<div class="about-us-page position-relative overflow-hidden py-5">
+    <!-- Right Side Corner Image (about1.jpg) -->
+    <div class="about-right-corner-img">
+        <img src="{% static 'shoe/images/about1.jpg' %}" alt="StepUp Shoes" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80';">
+    </div>
+
+    <div class="container my-4" style="max-width: 1320px; z-index: 2; position: relative;">
+        <!-- About StepUp Section -->
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-4" style="font-family: var(--font-serif); font-size: 3.3rem; color: #111;">About StepUp</h2>
+            <p class="text-secondary mx-auto lh-lg" style="font-family: var(--font-serif); font-size: 1.35rem; max-width: 1150px;">
+                StepUp is India’s largest sports and athleisure footwear brand. Incorporated in 2006, StepUp Activewear is one of the leading players in organized sports & casual footwear sector in India. Since 2016, the flagship brand "StepUp", has been the largest sports and athleisure footwear brand in India, in both volume and value terms. The company’s products are available via an expansive Pan-India network of over 15,000 geo-tagged multi-brand retail stores, 35+ company-owned exclusive outlets, large format stores such as Walmart, Vishal Retail and Reliance Smart among others and all the leading e-commerce portals.
+            </p>
+        </div>
+
+        <!-- Our Mission Section -->
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-4" style="font-family: var(--font-serif); font-size: 3.3rem; color: #111;">Our Mission</h2>
+            <p class="text-secondary mx-auto lh-lg" style="font-family: var(--font-serif); font-size: 1.35rem; max-width: 1150px;">
+                At StepUp we craft shoes with care for everyone- men, women and kids, with an equal attention to detail, letting each shoe speak for itself. The world-class quality, trendy designs and affordable prices have captured the imagination of millions of people, across the country- making StepUp, an aspirational brand especially for - young adults, everyday performers and fashionistas.
+            </p>
+        </div>
+
+        <!-- Center Circular Image (about2.jpg) -->
+        <div class="text-center my-5">
+            <div class="mx-auto shadow-lg" style="width: 340px; height: 340px; border-radius: 50%; overflow: hidden; border: 6px solid #ffffff; background-color: #f3f4f6;">
+                <img src="{% static 'shoe/images/about2.jpg' %}" alt="StepUp Kids Footwear" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=800&q=80';">
+            </div>
+        </div>
+
+        <!-- Three Pillars Section -->
+        <div class="row g-5 text-center mt-4">
+            <div class="col-md-4">
+                <h3 class="fw-bold mb-3" style="font-family: var(--font-serif); font-size: 1.7rem; color: #111;">Simplicity In Design</h3>
+                <p class="text-secondary lh-lg" style="font-family: var(--font-serif); font-size: 1.15rem;">
+                    No flashy logos, No senseless details, Just the world’s most comfortable shoes,made naturally and designed practically,It’s that simple.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h3 class="fw-bold mb-3" style="font-family: var(--font-serif); font-size: 1.7rem; color: #111;">Confidance in Comfort</h3>
+                <p class="text-secondary lh-lg" style="font-family: var(--font-serif); font-size: 1.15rem;">
+                    Trying is believing.Give our shoes a shot for 30 days.and if you’re not walking on cloud nine,we’ll take them back-no questions asked.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h3 class="fw-bold mb-3" style="font-family: var(--font-serif); font-size: 1.7rem; color: #111;">Made from Nature</h3>
+                <p class="text-secondary lh-lg" style="font-family: var(--font-serif); font-size: 1.15rem;">
+                    The footwear industry often overlooks mother Nature’s materials in favor of cheaper,synthetic alternatives.We think it’s time to change that.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.about-right-corner-img {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 320px;
+    height: 600px;
+    border-top-left-radius: 300px;
+    border-bottom-left-radius: 300px;
+    overflow: hidden;
+    z-index: 1;
+    opacity: 0.9;
+}
+.about-right-corner-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+@media (max-width: 992px) {
+    .about-right-corner-img {
+        display: none;
+    }
+}
+</style>
+{% endblock %}

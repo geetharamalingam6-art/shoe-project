@@ -1,0 +1,229 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}StepUp.in - Premium Footwear & Sneakers{% endblock %}
+
+{% block content %}
+<!-- ==========================================================================
+     HERO BANNER SECTION (Slider)
+     ========================================================================== -->
+<section class="hero-banner-container" id="hero-slider">
+    <div class="hero-slider-track">
+        
+        <!-- SLIDE 1: Hero Banner -->
+        <div class="hero-slide active" data-slide-index="0">
+            <img src="{% static 'shoe/images/hero.jpeg' %}" alt="StepUp Footwear Collection" class="hero-slide-bg">
+            <div class="hero-overlay-content">
+                <div class="hero-promo-badge">
+                    <span class="promo-title">Flat 50% Sale</span>
+                    <span class="promo-subtitle">New Collection</span>
+                </div>
+                <a href="{% url 'category' 'mens' %}" class="hero-shop-btn">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Women's Hero Image -->
+        <div class="hero-slide" data-slide-index="1">
+            <img src="{% static 'shoe/images/hero_womens.jpg' %}" alt="Women's Collection" class="hero-slide-bg">
+            <div class="hero-overlay-content">
+                <div class="hero-promo-badge">
+                    <span class="promo-title">Trending 40% Off</span>
+                    <span class="promo-subtitle">Women's Collection</span>
+                </div>
+                <a href="{% url 'category' 'womens' %}" class="hero-shop-btn">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Men's Hero Image -->
+        <div class="hero-slide" data-slide-index="2">
+            <img src="{% static 'shoe/images/hero_mens.jpg' %}" alt="Men's Collection" class="hero-slide-bg" style="object-position: center 82%;">
+            <div class="hero-overlay-content">
+                <div class="hero-promo-badge">
+                    <span class="promo-title">Premium Leather</span>
+                    <span class="promo-subtitle">Men's Collection</span>
+                </div>
+                <a href="{% url 'category' 'mens' %}" class="hero-shop-btn">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Brands Hero Image -->
+        <div class="hero-slide" data-slide-index="3">
+            <img src="{% static 'shoe/images/hero_brands.jpg' %}" alt="Exclusive Brands Collection" class="hero-slide-bg" style="object-position: 100% 100%;">
+            <div class="hero-overlay-content">
+                <div class="hero-promo-badge">
+                    <span class="promo-title">Exclusive Drop</span>
+                    <span class="promo-subtitle">Brands Collection</span>
+                </div>
+                <a href="{% url 'category' 'brands' %}" class="hero-shop-btn">Shop Now</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Arrow Controls -->
+    <button class="slider-arrow-btn slider-arrow-prev" aria-label="Previous Slide">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+    <button class="slider-arrow-btn slider-arrow-next" aria-label="Next Slide">
+        <i class="bi bi-chevron-right"></i>
+    </button>
+
+    <!-- Slider Indicators -->
+    <div class="hero-slider-indicators">
+        <button class="slider-indicator-dot active" data-slide-to="0" aria-label="Slide 1"></button>
+        <button class="slider-indicator-dot" data-slide-to="1" aria-label="Slide 2"></button>
+        <button class="slider-indicator-dot" data-slide-to="2" aria-label="Slide 3"></button>
+        <button class="slider-indicator-dot" data-slide-to="3" aria-label="Slide 4"></button>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     1. OVERVIEW SECTION
+     ========================================================================== -->
+<section class="section-container overview-section text-center my-5 py-4">
+    <div class="container">
+        <h2 class="section-header-title mb-4">Overview</h2>
+        <p class="overview-paragraph mx-auto fw-bold text-dark lh-lg" style="max-width: 1150px; font-family: var(--font-serif); font-size: 1.45rem;">
+            "Explore our curated selection of high-quality shoes for every occasion. From durable athletic shoes designed for peak performance to stylish casual sneakers and elegant dress shoes, we offer a diverse range of footwear to suit your needs. Our user-friendly interface makes it easy to browse our collection and find the perfect pair, while detailed product descriptions and high-quality images ensure you make an informed decision. Join our community of style and discover your next favorite shoe!"
+        </p>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     2. WHAT ARE YOU LOOKING FOR? SECTION (Category Cards with mens.png, womens.png, kids.png)
+     ========================================================================== -->
+<!-- ==========================================================================
+     2. WHAT ARE YOU LOOKING FOR? SECTION (4 Category Cards per Row)
+     ========================================================================== -->
+<section class="section-container category-cards-section my-5">
+    <div class="w-100">
+        <h2 class="section-header-title text-center mb-5">What are you looking for?</h2>
+
+        <div class="row g-4">
+
+            <!-- Category 1: Men's -->
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+                <a href="{% url 'category' 'mens' %}" class="category-card-link text-decoration-none d-block h-100">
+                    <div class="category-card-item">
+                        <div class="category-card-img-wrapper">
+                            <img src="{% static 'shoe/images/mens.png' %}" alt="Men's Collection" class="category-card-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80';">
+                            <div class="category-card-overlay">
+                                <h3 class="category-card-title">Men's</h3>
+                                <span class="category-card-subtitle">Explore Collection <i class="bi bi-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Category 2: Women's -->
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+                <a href="{% url 'category' 'womens' %}" class="category-card-link text-decoration-none d-block h-100">
+                    <div class="category-card-item">
+                        <div class="category-card-img-wrapper">
+                            <img src="{% static 'shoe/images/womens.png' %}" alt="Women's Collection" class="category-card-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80';">
+                            <div class="category-card-overlay">
+                                <h3 class="category-card-title">Women's</h3>
+                                <span class="category-card-subtitle">Explore Collection <i class="bi bi-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Category 3: Kids' -->
+            <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+                <a href="{% url 'category' 'kids' %}" class="category-card-link text-decoration-none d-block h-100">
+                    <div class="category-card-item">
+                        <div class="category-card-img-wrapper">
+                            <img src="{% static 'shoe/images/kids.png' %}" alt="Kids' Collection" class="category-card-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=800&q=80';">
+                            <div class="category-card-overlay">
+                                <h3 class="category-card-title">Kids'</h3>
+                                <span class="category-card-subtitle">Explore Collection <i class="bi bi-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     4. NEW & TRENDING SECTION (Strictly 4 Cards per Row)
+     ========================================================================== -->
+<section class="section-container new-trending-section my-5">
+    <div class="w-100">
+        <div class="mb-4">
+            <h2 class="section-header-title text-center m-0">New & Trending</h2>
+        </div>
+        
+        <div class="product-grid">
+            {% if trending_products %}
+                {% for product in trending_products %}
+                <div class="product-card">
+                    <div class="product-card-img-wrapper">
+                        {% if product.discount_percent %}
+                        <span class="product-discount-badge">-{{ product.discount_percent }}% OFF</span>
+                        {% endif %}
+                        <span class="product-brand-badge">{{ product.brand|default:product.category.name }}</span>
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-card-img">
+                        {% elif product.image_static %}
+                        <img src="{% static product.image_static %}" alt="{{ product.name }}" class="product-card-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80';">
+                        {% else %}
+                        <img src="{% static 'shoe/images/new1.jpg' %}" alt="{{ product.name }}" class="product-card-img">
+                        {% endif %}
+                    </div>
+                    <div class="product-card-body">
+                        <div class="product-meta-row">
+                            <span class="product-category-tag">{{ product.category.name }}</span>
+                            <span class="product-rating-pill">
+                                <i class="bi bi-star-fill"></i> {{ product.rating }}
+                            </span>
+                        </div>
+                        <h3 class="product-card-title" title="{{ product.name }}">{{ product.name }}</h3>
+                        
+                        <div class="product-details-subline">
+                            <span class="product-style-pill">{{ product.style_type|default:"Trainers" }}</span>
+                            <div class="product-color-dots" title="Available Colors">
+                                <span class="product-color-dot" style="background:#111;"></span>
+                                <span class="product-color-dot" style="background:#854d0e;"></span>
+                                <span class="product-color-dot" style="background:#fff;"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-price-row">
+                            <span class="product-current-price">₹{{ product.final_price }}</span>
+                            {% if product.discount_price %}
+                            <span class="product-original-price">₹{{ product.mrp_price }}</span>
+                            <span class="product-save-badge">Save ₹{{ product.discount_amount|default:"300" }}</span>
+                            {% endif %}
+                        </div>
+
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn-card-add">
+                            <i class="bi bi-cart3"></i> Add to Cart
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-muted col-12">No trending products available at the moment.</p>
+            {% endif %}
+        </div>
+
+        <!-- View all button placed at the end of the cards on the right side -->
+        <div class="d-flex justify-content-end my-4">
+            <a href="{% url 'category' 'offers' %}" class="btn px-4 py-2" style="background-color: #2F4F4F; color: #ffffff; border-radius: 8px; font-family: var(--font-serif); font-weight: 600;">View all</a>
+        </div>
+
+        <!-- Get your first order offer box -->
+        <div class="offer-banner-box my-5">
+            <span>🎁 Get your first order with free gift 🎁 & 50 % offer 🏷️</span>
+        </div>
+    </div>
+</section>
+    </div>
+</section>
+{% endblock %}

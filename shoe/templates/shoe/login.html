@@ -1,0 +1,96 @@
+{% extends 'shoe/base.html' %}
+
+{% block title %}Log In - StepUp.in{% endblock %}
+
+{% block content %}
+<main class="auth-page section-container">
+    <section class="auth-card" aria-label="Account access">
+        <div class="auth-tabs" role="tablist" aria-label="Account options">
+            <button class="auth-tab is-active" id="login-tab" type="button" role="tab" aria-selected="true" aria-controls="login-panel">Log in</button>
+            <button class="auth-tab" id="register-tab" type="button" role="tab" aria-selected="false" aria-controls="register-panel">Register</button>
+        </div>
+
+        <div class="auth-panel" id="login-panel" role="tabpanel" aria-labelledby="login-tab">
+            <form method="POST" action="{% url 'login' %}" class="auth-form">
+                {% csrf_token %}
+                <div class="auth-field">
+                    <label for="login-email">Email id</label>
+                    <input id="login-email" type="email" name="username" placeholder="Enter your email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="login-password">Password</label>
+                    <div class="auth-password-wrap">
+                        <input id="login-password" type="password" name="password" placeholder="Enter password" autocomplete="current-password" required>
+                        <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" data-password-target="login-password"><i class="bi bi-eye-slash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <a class="auth-forgot" href="#">Forget Password?</a>
+                <button type="submit" class="auth-submit">Log In</button>
+            </form>
+            <div class="auth-or">Or</div>
+            <button class="auth-google" type="button">Continue with google <span class="google-mark" aria-label="Google">G</span></button>
+            <p class="auth-switch-copy">Don’t have an account? <button type="button" class="auth-inline-link" data-open-register>Register</button></p>
+        </div>
+
+        <div class="auth-panel" id="register-panel" role="tabpanel" aria-labelledby="register-tab" hidden>
+            <form method="POST" action="{% url 'login' %}" class="auth-form">
+                {% csrf_token %}
+                <div class="auth-field">
+                    <label for="register-name">Name</label>
+                    <input id="register-name" type="text" name="name" placeholder="Enter your name" autocomplete="name" required>
+                </div>
+                <div class="auth-field">
+                    <label for="register-email">Email id</label>
+                    <input id="register-email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="register-password">Password</label>
+                    <div class="auth-password-wrap">
+                        <input id="register-password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" required>
+                        <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" data-password-target="register-password"><i class="bi bi-eye-slash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <button type="submit" class="auth-submit">Register</button>
+            </form>
+            <p class="auth-switch-copy">Already have an account? <button type="button" class="auth-inline-link" data-open-login>Log in</button></p>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (() => {
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginPanel = document.getElementById('login-panel');
+        const registerPanel = document.getElementById('register-panel');
+
+        function showPanel(panel) {
+            const showLogin = panel === 'login';
+            loginPanel.hidden = !showLogin;
+            registerPanel.hidden = showLogin;
+            loginTab.classList.toggle('is-active', showLogin);
+            registerTab.classList.toggle('is-active', !showLogin);
+            loginTab.setAttribute('aria-selected', String(showLogin));
+            registerTab.setAttribute('aria-selected', String(!showLogin));
+        }
+
+        loginTab.addEventListener('click', () => showPanel('login'));
+        registerTab.addEventListener('click', () => showPanel('register'));
+        document.querySelector('[data-open-register]').addEventListener('click', () => showPanel('register'));
+        document.querySelector('[data-open-login]').addEventListener('click', () => showPanel('login'));
+
+        document.querySelectorAll('[data-password-target]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const input = document.getElementById(button.dataset.passwordTarget);
+                const shouldShow = input.type === 'password';
+                input.type = shouldShow ? 'text' : 'password';
+                button.setAttribute('aria-pressed', String(shouldShow));
+                button.setAttribute('aria-label', shouldShow ? 'Hide password' : 'Show password');
+                button.innerHTML = `<i class="bi ${shouldShow ? 'bi-eye' : 'bi-eye-slash'}" aria-hidden="true"></i>`;
+            });
+        });
+    })();
+</script>
+{% endblock %}

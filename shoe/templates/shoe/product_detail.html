@@ -1,0 +1,75 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - StepUp.in{% endblock %}
+
+{% block content %}
+<div class="section-container my-5">
+    <div class="row g-5 align-items-center">
+        <!-- Product Image -->
+        <div class="col-md-6">
+            <div class="border rounded-4 p-3 bg-white shadow-sm text-center" style="height: 450px; overflow: hidden;">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded-3" style="width: 100%; height: 100%; object-fit: cover;">
+                {% elif product.image_static %}
+                <img src="{% static product.image_static %}" alt="{{ product.name }}" class="img-fluid rounded-3" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80';">
+                {% else %}
+                <img src="{% static 'shoe/images/hero_mens.jpg' %}" alt="{{ product.name }}" class="img-fluid rounded-3" style="width: 100%; height: 100%; object-fit: cover;">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <h6 class="text-uppercase text-muted" style="font-family: var(--font-sans); letter-spacing: 1px;">{{ product.brand|default:product.category.name }}</h6>
+            <h1 class="fw-bold mb-3" style="font-family: var(--font-serif); font-size: 2.2rem;">{{ product.name }}</h1>
+            
+            <div class="product-rating mb-3 fs-5">
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-half text-warning"></i>
+                <span class="ms-2 fw-bold text-dark">{{ product.rating }}</span>
+            </div>
+
+            <div class="d-flex align-items-baseline gap-3 mb-4">
+                <span class="fs-3 fw-bold text-dark" style="font-family: var(--font-sans);">₹{{ product.final_price }}</span>
+                {% if product.discount_price %}
+                <span class="fs-5 text-muted text-decoration-line-through" style="font-family: var(--font-sans);">₹{{ product.mrp_price }}</span>
+                <span class="badge bg-danger fs-6">{{ product.discount_percent }}% OFF</span>
+                {% endif %}
+            </div>
+
+            <p class="text-secondary mb-4" style="font-family: var(--font-sans); line-height: 1.8;">
+                {{ product.description|default:"Experience unmatched comfort, premium materials, and modern design with this exquisite footwear choice from StepUp.in." }}
+            </p>
+
+            <div class="mb-4">
+                <strong class="d-block mb-2" style="font-family: var(--font-serif);">Available Sizes:</strong>
+                <span class="badge bg-light text-dark border p-2 me-2">{{ product.sizes|default:"Adult UK(6), Adult UK(7)" }}</span>
+            </div>
+
+            <div class="mb-4">
+                <strong class="d-block mb-2" style="font-family: var(--font-serif);">Available Colors:</strong>
+                <span class="text-muted" style="font-family: var(--font-sans);">{{ product.colors|default:"Black, Brown, White" }}</span>
+            </div>
+
+            <div class="d-flex gap-3">
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-dark btn-lg px-5 py-3 fw-bold" style="background-color: var(--color-primary); font-family: var(--font-sans);">
+                    <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                </a>
+                <a href="{% url 'cart' %}" class="btn btn-outline-dark btn-lg px-5 py-3 fw-bold" style="font-family: var(--font-sans);">
+                    Go to Cart & Checkout
+                </a>
+            </div>
+
+            <div class="mt-4">
+                <a href="{% url 'category' 'mens' %}" class="text-decoration-none text-muted" style="font-family: var(--font-sans);">
+                    &larr; Back to Men's Collection
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

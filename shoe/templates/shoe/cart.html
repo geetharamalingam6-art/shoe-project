@@ -1,0 +1,92 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}Your Cart - StepUp.in{% endblock %}
+
+{% block content %}
+<main class="cart-page section-container">
+    <h2 class="cart-page-title">Your Cart</h2>
+
+    <div class="delivery-promise">
+        <strong>Free &amp; Fast arriving by Monday</strong>
+        <span>Order today for free delivery</span>
+    </div>
+
+    <section class="cart-items-list" aria-label="Items in your cart">
+        {% if cart_items %}
+            {% for item in cart_items %}
+            <article class="cart-item">
+                <div class="cart-product-visual">
+                    <img class="cart-product-main-image" src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static item.product.image_static %}{% endif %}" alt="{{ item.product.name }}">
+                </div>
+                <div class="cart-item-description">
+                    <h3>{{ item.product.brand }}</h3>
+                    <p>{{ item.product.name }}</p>
+                    <strong>MRP &#8377; {{ item.product.final_price|floatformat:0 }}</strong>
+                </div>
+                <div class="cart-item-controls">
+                    <label class="cart-select-wrap">
+                        <span class="visually-hidden">Choose size</span>
+                        <select aria-label="Size" name="size">
+                            <option>Size (41)</option>
+                            <option>Size (40)</option>
+                            <option>Size (42)</option>
+                        </select>
+                    </label>
+                    <form action="{% url 'update_cart_quantity' item.id %}" method="post" class="cart-select-wrap cart-qty-form">
+                        {% csrf_token %}
+                        <label>
+                            <span class="visually-hidden">Choose quantity</span>
+                            <select aria-label="Quantity" name="quantity" onchange="this.form.submit()">
+                                <option value="1" {% if item.quantity == 1 %}selected{% endif %}>Quantity (1)</option>
+                                <option value="2" {% if item.quantity == 2 %}selected{% endif %}>Quantity (2)</option>
+                                <option value="3" {% if item.quantity == 3 %}selected{% endif %}>Quantity (3)</option>
+                                <option value="4" {% if item.quantity == 4 %}selected{% endif %}>Quantity (4)</option>
+                                <option value="5" {% if item.quantity == 5 %}selected{% endif %}>Quantity (5)</option>
+                            </select>
+                        </label>
+                    </form>
+                </div>
+                <form action="{% url 'remove_from_cart' item.id %}" method="post" class="cart-remove-form">
+                    {% csrf_token %}
+                    <button class="cart-remove" type="submit" aria-label="Remove {{ item.product.name }}"><span>Remove</span><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                </form>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="cart-empty-state">
+                <i class="bi bi-bag-x" aria-hidden="true"></i>
+                <h3>Your cart is empty</h3>
+                <p>Looks like you haven't added anything yet.</p>
+                <a href="{% url 'category' 'mens' %}" class="cart-empty-shop-btn">Start Shopping</a>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="cart-summary" aria-label="Order summary">
+        <h2>Summary</h2>
+        <div class="cart-summary-row"><span>Total</span><span>&#8377; {{ total|floatformat:0|default:"0" }}</span></div>
+        <div class="cart-summary-row"><span>Delivery</span><span>Free</span></div>
+        <a class="delivery-info-link" href="#delivery-info">Delivery &amp; return information <i class="bi bi-truck" aria-hidden="true"></i></a>
+    </section>
+
+    <section class="express-checkout" aria-label="Express checkout">
+        {% if cart_items %}
+        <a href="{% url 'checkout' %}" class="secure-checkout"><i class="bi bi-lock" aria-hidden="true"></i> Checkout Securely</a>
+        {% else %}
+        <button type="button" class="secure-checkout" disabled><i class="bi bi-lock" aria-hidden="true"></i> Checkout Securely</button>
+        {% endif %}
+        <h2>Express Checkout</h2>
+        <div class="express-payment-options">
+            <button type="button" class="express-payment-button" aria-label="Google Pay"><span class="google-mark">G</span><span>Pay</span></button>
+            <button type="button" class="express-payment-button" aria-label="PayPal"><img src="{% static 'shoe/images/cart2.png' %}" alt="PayPal"></button>
+        </div>
+        <div class="cart-payment-methods" aria-label="Accepted payment methods">
+            <img src="{% static 'shoe/images/cart1.png' %}" alt="RuPay">
+            <img src="{% static 'shoe/images/cart2.png' %}" alt="PayPal">
+            <img src="{% static 'shoe/images/cart3.png' %}" alt="Clearpay">
+            <img src="{% static 'shoe/images/cart4.png' %}" alt="Klarna">
+        </div>
+    </section>
+</main>
+{% endblock %}

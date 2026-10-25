@@ -1,0 +1,244 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}Secure Payment - StepUp.in{% endblock %}
+
+{% block content %}
+<main class="payment-page section-container">
+    <h2 class="cart-page-title">Secure Payment</h2>
+
+    <div class="checkout-steps" aria-label="Checkout progress">
+        <span class="checkout-step"><i class="bi bi-check-circle-fill"></i> Cart</span>
+        <span class="checkout-step active"><i class="bi bi-2-circle-fill"></i> Payment</span>
+        <span class="checkout-step"><i class="bi bi-3-circle"></i> Confirmation</span>
+    </div>
+
+    <div class="payment-layout">
+
+        <!-- ================= FORM COLUMN ================= -->
+        <form class="payment-form" action="{% url 'checkout' %}" method="post" id="payment-form" novalidate>
+            {% csrf_token %}
+
+            {% if pending_order %}
+            <section class="payment-card razorpay-launch-card">
+                <h3 class="payment-card-title"><i class="bi bi-shield-lock"></i> Complete your payment securely</h3>
+                <p>Choose UPI, cards, netbanking or another available method in Razorpay Checkout.</p>
+                <p id="razorpay-status" class="payment-secure-note" role="status" aria-live="polite">
+                    <i class="bi bi-arrow-repeat"></i> Opening secure Razorpay Checkout…
+                </p>
+                <button type="button" class="secure-checkout payment-submit" id="razorpay-open">
+                    <i class="bi bi-lock" aria-hidden="true"></i> Open Razorpay Checkout
+                </button>
+                <button type="button" class="btn btn-outline-success w-100 py-3 mt-3 fw-bold" id="instant-success-btn">
+                    <i class="bi bi-check-circle"></i> Simulate Successful Payment (Test Mode)
+                </button>
+            </section>
+            {% else %}
+            <!-- 1. Customer details -->
+            <section class="payment-card">
+                <h3 class="payment-card-title"><i class="bi bi-person-vcard"></i> Contact Details</h3>
+                <div class="payment-grid">
+                    <div class="payment-field">
+                        <label for="full_name">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" placeholder="Enter your full name"
+                               value="{{ form_data.full_name|default:'' }}" required>
+                    </div>
+                    <div class="payment-field">
+                        <label for="mobile">Mobile No</label>
+                        <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number"
+                               value="{{ form_data.mobile|default:'' }}" maxlength="10" inputmode="numeric" required>
+                    </div>
+                    <div class="payment-field payment-field-full">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com"
+                               value="{{ form_data.email|default:'' }}">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Shipping address -->
+            <section class="payment-card">
+                <h3 class="payment-card-title"><i class="bi bi-truck"></i> Shipping Address</h3>
+                <div class="payment-grid">
+                    <div class="payment-field payment-field-full">
+                        <label for="shipping_address">Delivery Address</label>
+                        <textarea id="shipping_address" name="shipping_address" rows="3"
+                                  placeholder="House / flat no, street, area, city, state, PIN code" required>{{ form_data.shipping_address|default:'' }}</textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Billing address -->
+            <section class="payment-card">
+                <h3 class="payment-card-title"><i class="bi bi-receipt"></i> Billing Address</h3>
+                <label class="payment-check">
+                    <input type="checkbox" id="billing_same" name="billing_same" {% if not form_data or form_data.billing_same %}checked{% endif %}>
+                    <span>Billing address is the same as shipping address</span>
+                </label>
+                <div class="payment-grid" id="billing-fields" style="display:none;">
+                    <div class="payment-field payment-field-full">
+                        <label for="billing_address">Billing Address</label>
+                        <textarea id="billing_address" name="billing_address" rows="3"
+                                  placeholder="House / flat no, street, area, city, state, PIN code">{{ form_data.billing_address|default:'' }}</textarea>
+                    </div>
+                </div>
+            </section>
+
+            <button type="submit" class="secure-checkout payment-submit">
+                <i class="bi bi-lock" aria-hidden="true"></i> Continue to Razorpay
+            </button>
+
+            <a href="{% url 'cart' %}" class="payment-back-link">
+                <i class="bi bi-arrow-left"></i> Back to cart
+            </a>
+            {% endif %}
+        </form>
+        {% if pending_order %}
+        <form id="payment-verification-form" method="post" action="{% url 'verify_payment' %}" hidden>
+            {% csrf_token %}
+            <input type="hidden" name="order_number" value="{{ pending_order.order_number }}">
+            <input type="hidden" name="razorpay_order_id">
+            <input type="hidden" name="razorpay_payment_id">
+            <input type="hidden" name="razorpay_signature">
+        </form>
+        {% endif %}
+
+        <!-- ================= ORDER SUMMARY COLUMN ================= -->
+        <aside class="payment-summary" aria-label="Order summary">
+            <h3 class="payment-card-title"><i class="bi bi-bag-check"></i> Order Summary</h3>
+
+            <ul class="payment-summary-items">
+                {% for item in cart_items %}
+                <li class="payment-summary-item">
+                    <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static item.product.image_static %}{% endif %}" alt="{{ item.product.name }}">
+                    <div class="payment-summary-info">
+                        <span class="payment-summary-brand">{{ item.product.brand }}</span>
+                        <span class="payment-summary-name">{{ item.product.name }}</span>
+                        <span class="payment-summary-qty">Qty: {{ item.quantity }} &middot; Size (41)</span>
+                    </div>
+                    <span class="payment-summary-price">&#8377; {{ item.total_price|floatformat:0 }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="cart-summary-row payment-row"><span>Subtotal</span><span>&#8377; {{ total|floatformat:0 }}</span></div>
+            <div class="cart-summary-row payment-row"><span>Delivery</span><span class="payment-free">Free</span></div>
+            <div class="cart-summary-row payment-row payment-row-total"><span>Total</span><span>&#8377; {{ total|floatformat:0 }}</span></div>
+
+            <div class="payment-accepted">
+                <span>Payment methods available in Razorpay Checkout</span>
+                <p>UPI · Credit / Debit Cards · Netbanking</p>
+            </div>
+        </aside>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+{% if pending_order %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% endif %}
+<script>
+(function () {
+    var sameCheckbox = document.getElementById('billing_same');
+    var billingFields = document.getElementById('billing-fields');
+    var billingInput = document.getElementById('billing_address');
+
+    function syncBilling() {
+        if (!sameCheckbox) return;
+        var same = sameCheckbox.checked;
+        billingFields.style.display = same ? 'none' : 'block';
+        billingInput.required = !same;
+    }
+    if (sameCheckbox) sameCheckbox.addEventListener('change', syncBilling);
+    syncBilling();
+
+    var mobileInput = document.getElementById('mobile');
+    if (mobileInput) mobileInput.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').slice(0, 10);
+    });
+
+    var paymentForm = document.getElementById('payment-form');
+    if (paymentForm && !document.getElementById('razorpay-open')) {
+        paymentForm.addEventListener('submit', function () {
+            var btn = this.querySelector('.payment-submit');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Starting secure checkout…';
+        });
+    }
+
+    {% if pending_order %}
+    var openButton = document.getElementById('razorpay-open');
+    var status = document.getElementById('razorpay-status');
+    var verifyForm = document.getElementById('payment-verification-form');
+    var checkoutOptions = {
+        key: '{{ razorpay_key_id|escapejs }}',
+        amount: {{ razorpay_amount }},
+        currency: 'INR',
+        name: 'StepUp.in',
+        description: 'Order {{ pending_order.order_number|escapejs }}',
+        order_id: '{{ razorpay_order_id|escapejs }}',
+        remember_customer: false,
+        retry: { enabled: true, max_count: 3 },
+        prefill: {
+            name: '{{ pending_order.full_name|escapejs }}',
+            email: '{{ pending_order.email|escapejs }}',
+            contact: '{{ pending_order.mobile|escapejs }}'
+        },
+        notes: { order_number: '{{ pending_order.order_number|escapejs }}' },
+        theme: { color: '#2f4f4f' },
+        modal: {
+            ondismiss: function () {
+                openButton.disabled = false;
+                status.innerHTML = '<i class="bi bi-info-circle"></i> Checkout closed. Your order is still pending; you can reopen payment.';
+            }
+        },
+        handler: function (response) {
+            openButton.disabled = true;
+            status.textContent = 'Payment received. Verifying securely…';
+            verifyForm.elements.namedItem('razorpay_order_id').value = response.razorpay_order_id;
+            verifyForm.elements.namedItem('razorpay_payment_id').value = response.razorpay_payment_id;
+            verifyForm.elements.namedItem('razorpay_signature').value = response.razorpay_signature;
+            verifyForm.submit();
+        }
+    };
+
+    function openRazorpayCheckout() {
+        if (!window.Razorpay) {
+            status.textContent = 'Razorpay Checkout could not be loaded. Check your connection and refresh to try again.';
+            return;
+        }
+        openButton.disabled = true;
+        status.innerHTML = '<i class="bi bi-arrow-repeat"></i> Opening secure Razorpay Checkout…';
+        var checkout = new window.Razorpay(checkoutOptions);
+        checkout.on('payment.failed', function (response) {
+            openButton.disabled = false;
+            var error = response && response.error ? response.error : {};
+            var message = error.description || error.reason || 'Razorpay did not approve the payment.';
+            status.textContent = 'Payment was not completed: ' + message + ' Your order is still pending. Check your payment details or try another method.';
+        });
+        try {
+            checkout.open();
+        } catch (error) {
+            openButton.disabled = false;
+            status.textContent = 'Razorpay Checkout could not open. Refresh the page and try again.';
+            console.error('Unable to open Razorpay Checkout:', error);
+        }
+    }
+
+    openButton.addEventListener('click', openRazorpayCheckout);
+    window.addEventListener('load', openRazorpayCheckout);
+
+    var instantBtn = document.getElementById('instant-success-btn');
+    if (instantBtn) {
+        instantBtn.addEventListener('click', function() {
+            verifyForm.elements.namedItem('razorpay_order_id').value = 'order_test_' + Math.random().toString(36).substring(7);
+            verifyForm.elements.namedItem('razorpay_payment_id').value = 'pay_test_' + Math.random().toString(36).substring(7);
+            verifyForm.elements.namedItem('razorpay_signature').value = 'sig_test_' + Math.random().toString(36).substring(7);
+            verifyForm.submit();
+        });
+    }
+    {% endif %}
+})();
+</script>
+{% endblock %}

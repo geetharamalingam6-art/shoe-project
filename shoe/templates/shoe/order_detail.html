@@ -1,0 +1,91 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}Order {{ order.order_number }} - StepUp.in{% endblock %}
+
+{% block content %}
+<main class="payment-page section-container invoice-page">
+    <div class="invoice-heading">
+        <div>
+            <h2 class="cart-page-title">Order Details & Tracking</h2>
+            <p>Invoice No: INV-{{ order.order_number }}</p>
+        </div>
+        <button type="button" class="payment-secondary-btn invoice-print-button" onclick="window.print()">
+            <i class="bi bi-printer"></i> Print / Save as PDF
+        </button>
+    </div>
+
+    <!-- Shipment Tracking Timeline -->
+    <div class="order-tracking-timeline my-4 p-4 bg-white border rounded-4 shadow-sm">
+        <h4 class="fw-bold mb-3" style="font-family: var(--font-serif); font-size: 1.15rem; color: #2F4F4F;">
+            <i class="bi bi-truck me-2"></i> Shipment Tracking Status: <span class="text-primary">In Transit (Shipped)</span>
+        </h4>
+        <div class="row text-center" style="font-family: var(--font-sans); font-size: 0.85rem;">
+            <div class="col-3">
+                <div class="p-2 border-bottom border-success border-3 text-success fw-bold">1. Placed</div>
+                <small class="text-muted">{{ order.created_at|date:"d M Y" }}</small>
+            </div>
+            <div class="col-3">
+                <div class="p-2 border-bottom border-success border-3 text-success fw-bold">2. Packed</div>
+                <small class="text-muted">Completed</small>
+            </div>
+            <div class="col-3">
+                <div class="p-2 border-bottom border-primary border-3 text-primary fw-bold">3. Shipped</div>
+                <small class="text-muted">Out for Delivery</small>
+            </div>
+            <div class="col-3">
+                <div class="p-2 border-bottom border-secondary border-3 text-muted">4. Delivered</div>
+                <small class="text-muted">Estimated Tomorrow</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="payment-success-meta">
+        <div><span>Order No</span><strong>{{ order.order_number }}</strong></div>
+        <div><span>Payment</span><strong class="payment-paid-badge">{{ order.get_payment_status_display }}</strong></div>
+        <div><span>Payment ID</span><strong>{{ order.razorpay_payment_id|default:"Paid (Test Mode)" }}</strong></div>
+        <div><span>Order Date</span><strong>{{ order.created_at|date:"d M Y" }}</strong></div>
+    </div>
+
+    <div class="payment-success-addresses">
+        <div class="payment-success-address">
+            <h4><i class="bi bi-truck"></i> Shipping Address</h4>
+            <p>{{ order.shipping_address|linebreaksbr }}</p>
+            <p class="payment-success-mobile"><i class="bi bi-telephone"></i> {{ order.mobile }}</p>
+        </div>
+        <div class="payment-success-address">
+            <h4><i class="bi bi-receipt"></i> Billing Address</h4>
+            <p>{{ order.billing_address|linebreaksbr }}</p>
+            {% if order.email %}<p class="payment-success-mobile"><i class="bi bi-envelope"></i> {{ order.email }}</p>{% endif %}
+        </div>
+    </div>
+
+    <h3 class="payment-card-title payment-items-title"><i class="bi bi-bag-check"></i> Items Ordered</h3>
+    <ul class="payment-summary-items">
+        {% for item in order_items %}
+        <li class="payment-summary-item">
+            {% if item.image_static %}
+            <img src="{% static item.image_static %}" alt="{{ item.product_name }}">
+            {% endif %}
+            <div class="payment-summary-info">
+                <span class="payment-summary-brand">{{ item.brand }}</span>
+                <span class="payment-summary-name">{{ item.product_name }}</span>
+                <span class="payment-summary-qty">Qty: {{ item.quantity }}{% if item.size %} &middot; Size {{ item.size }}{% endif %}</span>
+            </div>
+            <span class="payment-summary-price">&#8377; {{ item.line_total|floatformat:0 }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="cart-summary-row payment-row payment-row-total"><span>Total Paid</span><span>&#8377; {{ order.total|floatformat:0 }}</span></div>
+
+    <div class="payment-success-actions">
+        <a href="{% url 'home' %}" class="secure-checkout payment-submit" style="background-color: #2F4F4F;">
+            <i class="bi bi-bag"></i> Continue Shopping
+        </a>
+        <a href="{% url 'my_orders' %}" class="payment-secondary-btn">
+            <i class="bi bi-arrow-left"></i> Back to My Orders
+        </a>
+    </div>
+</main>
+{% endblock %}

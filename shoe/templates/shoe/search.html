@@ -1,0 +1,82 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}Search Results for "{{ query }}" - StepUp.in{% endblock %}
+
+{% block content %}
+<div class="section-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-header-title text-start m-0" style="text-align: left !important;">
+                Search Results: "{{ query }}"
+            </h2>
+            <p class="text-muted mt-1" style="font-family: var(--font-sans);">
+                Found {{ products|length }} result(s) for your search.
+            </p>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-sm" style="font-family: var(--font-sans);">
+            &larr; Back to Home
+        </a>
+    </div>
+
+    <div class="product-grid">
+        {% if products %}
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-card-img-wrapper">
+                    {% if product.discount_percent %}
+                    <span class="product-discount-badge">-{{ product.discount_percent }}% OFF</span>
+                    {% endif %}
+                    <span class="product-brand-badge">{{ product.brand|default:product.category.name }}</span>
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-card-img">
+                    {% elif product.image_static %}
+                    <img src="{% static product.image_static %}" alt="{{ product.name }}" class="product-card-img">
+                    {% else %}
+                    <img src="{% static 'shoe/images/hero_kids.jpg' %}" alt="{{ product.name }}" class="product-card-img">
+                    {% endif %}
+                </div>
+                <div class="product-card-body">
+                    <div class="product-meta-row">
+                        <span class="product-category-tag">{{ product.category.name }}</span>
+                        <span class="product-rating-pill">
+                            <i class="bi bi-star-fill"></i> {{ product.rating }}
+                        </span>
+                    </div>
+                    <h3 class="product-card-title" title="{{ product.name }}">{{ product.name }}</h3>
+                    
+                    <div class="product-details-subline">
+                        <span class="product-style-pill">{{ product.style_type|default:"Footwear" }}</span>
+                        <div class="product-color-dots" title="Available Colors">
+                            <span class="product-color-dot" style="background:#111;"></span>
+                            <span class="product-color-dot" style="background:#854d0e;"></span>
+                            <span class="product-color-dot" style="background:#fff;"></span>
+                        </div>
+                    </div>
+
+                    <div class="product-price-row">
+                        <span class="product-current-price">₹{{ product.final_price }}</span>
+                        {% if product.discount_price %}
+                        <span class="product-original-price">₹{{ product.mrp_price }}</span>
+                        <span class="product-save-badge">Save ₹{{ product.discount_amount|default:"300" }}</span>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'add_to_cart' product.id %}" class="btn-card-add">
+                        <i class="bi bi-cart3"></i> Add to Cart
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 py-5 text-center">
+                <i class="bi bi-search display-3 text-muted mb-3 d-block"></i>
+                <h4 style="font-family: var(--font-serif);">No shoes found matching "{{ query }}"</h4>
+                <p class="text-muted" style="font-family: var(--font-sans);">Try searching with different keywords like "Sneakers", "Kids", "Running", or browse our categories.</p>
+                <a href="{% url 'home' %}" class="btn text-white mt-2" style="background-color: var(--color-primary); font-family: var(--font-sans);">
+                    Browse All Products
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,380 @@
+{% extends 'shoe/base.html' %}
+{% load static %}
+
+{% block title %}{{ current_category.name }} Collection - StepUp.in{% endblock %}
+
+{% block content %}
+<div class="section-container my-4">
+    <!-- Category Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-header-title text-start m-0" style="text-align: left !important;">
+                {{ current_category.name }} Collection
+            </h2>
+            <p class="text-muted mt-1" style="font-family: var(--font-sans);">
+                Explore our premium selection of {{ current_category.name|lower }} footwear, sneakers, and boots.
+            </p>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-sm" style="font-family: var(--font-sans);">
+            &larr; Back to Home
+        </a>
+    </div>
+
+    <!-- ==========================================================================
+         FILTER TOOLBAR
+         ========================================================================== -->
+    <div class="filter-toolbar-wrapper border rounded-3 p-3 mb-4 bg-white shadow-sm">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            
+            <!-- Filter Toggle & Dropdowns -->
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                <!-- Filters Button -->
+                <button class="filter-main-btn btn btn-light border fw-bold px-3 py-2" id="toggle-filter-panel" style="font-family: var(--font-serif);">
+                    Filters <i class="bi bi-arrow-left ms-1"></i>
+                </button>
+
+                <!-- Style Dropdown -->
+                <div class="dropdown-filter-container position-relative">
+                    <button class="dropdown-toggle-btn btn btn-light border px-3 py-2" data-dropdown="style-dropdown">
+                        Style <i class="bi bi-caret-up-fill ms-1"></i>
+                    </button>
+                    <div class="custom-dropdown-panel shadow-sm border rounded-3 p-3 bg-white" id="style-dropdown" style="display: none; position: absolute; top: 110%; left: 0; z-index: 100; min-width: 200px;">
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="All" id="style-all" checked><label class="form-check-label" for="style-all">All Styles</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="New Arrivals" id="style-1"><label class="form-check-label" for="style-1">New Arrivals</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Sandals" id="style-2"><label class="form-check-label" for="style-2">Sandals</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Trainers" id="style-3"><label class="form-check-label" for="style-3">Trainers</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Boots" id="style-4"><label class="form-check-label" for="style-4">Boots</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Slippers" id="style-5"><label class="form-check-label" for="style-5">Slippers</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Canvas" id="style-6"><label class="form-check-label" for="style-6">Canvas</label></div>
+                        <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Summer Shop" id="style-7"><label class="form-check-label" for="style-7">Summer Shop</label></div>
+                    </div>
+                </div>
+
+                <!-- Size Dropdown -->
+                <div class="dropdown-filter-container position-relative">
+                    <button class="dropdown-toggle-btn btn btn-light border px-3 py-2" data-dropdown="size-dropdown">
+                        Size <i class="bi bi-caret-up-fill ms-1"></i>
+                    </button>
+                    <div class="custom-dropdown-panel shadow-sm border rounded-3 p-3 bg-white" id="size-dropdown" style="display: none; position: absolute; top: 110%; left: 0; z-index: 100; min-width: 200px;">
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="All" id="size-all" checked><label class="form-check-label" for="size-all">All Sizes</label></div>
+                        <div class="form-check mb-1"><input class="form-check-input filter-checkbox" type="checkbox" value="Junior UK(3)" id="size-1"><label class="form-check-label" for="size-1">Junior UK(3)</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Junior UK(4)" id="size-2"><label class="form-check-label" for="size-2">Junior UK(4)</label></div>
+                        <div class="form-check mb-1"><input class="form-check-input filter-checkbox" type="checkbox" value="Adult UK(3)" id="size-3"><label class="form-check-label" for="size-3">Adult UK(3)</label></div>
+                        <div class="form-check mb-1"><input class="form-check-input filter-checkbox" type="checkbox" value="Adult UK(4)" id="size-4"><label class="form-check-label" for="size-4">Adult UK(4)</label></div>
+                        <div class="form-check mb-1"><input class="form-check-input filter-checkbox" type="checkbox" value="Adult UK(5)" id="size-5"><label class="form-check-label" for="size-5">Adult UK(5)</label></div>
+                        <div class="form-check mb-1"><input class="form-check-input filter-checkbox" type="checkbox" value="Adult UK(6)" id="size-6"><label class="form-check-label" for="size-6">Adult UK(6)</label></div>
+                        <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Adult UK(7)" id="size-7"><label class="form-check-label" for="size-7">Adult UK(7)</label></div>
+                    </div>
+                </div>
+
+                <!-- Brands Dropdown -->
+                <div class="dropdown-filter-container position-relative">
+                    <button class="dropdown-toggle-btn btn btn-light border px-3 py-2" data-dropdown="brand-dropdown">
+                        Brands <i class="bi bi-caret-up-fill ms-1"></i>
+                    </button>
+                    <div class="custom-dropdown-panel shadow-sm border rounded-3 p-3 bg-white" id="brand-dropdown" style="display: none; position: absolute; top: 110%; left: 0; z-index: 100; min-width: 200px;">
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="All" id="brand-all" checked><label class="form-check-label" for="brand-all">All Brands</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Becket" id="brand-1"><label class="form-check-label" for="brand-1">Becket</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Comfy Steps" id="brand-2"><label class="form-check-label" for="brand-2">Comfy Steps</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Kickers" id="brand-3"><label class="form-check-label" for="brand-3">Kickers</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Lambretta" id="brand-4"><label class="form-check-label" for="brand-4">Lambretta</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Marvel" id="brand-5"><label class="form-check-label" for="brand-5">Marvel</label></div>
+                        <div class="form-check mb-2"><input class="form-check-input filter-checkbox" type="checkbox" value="Skechers" id="brand-6"><label class="form-check-label" for="brand-6">Skechers</label></div>
+                        <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Totes" id="brand-7"><label class="form-check-label" for="brand-7">Totes</label></div>
+                    </div>
+                </div>
+
+                <!-- Color Dropdown -->
+                <div class="dropdown-filter-container position-relative">
+                    <button class="dropdown-toggle-btn btn btn-light border px-3 py-2" data-dropdown="color-dropdown">
+                        Color <i class="bi bi-caret-up-fill ms-1"></i>
+                    </button>
+                    <div class="custom-dropdown-panel shadow-sm border rounded-3 p-3 bg-white" id="color-dropdown" style="display: none; position: absolute; top: 110%; left: 0; z-index: 100; min-width: 240px;">
+                        <div class="row g-2 text-center">
+                            <div class="col-4"><div class="color-swatch-item" data-color="Black"><span class="swatch-circle" style="background:#000;"></span><small class="d-block">Black</small></div></div>
+                            <div class="col-4"><div class="color-swatch-item" data-color="Blue"><span class="swatch-circle" style="background:#3b82f6;"></span><small class="d-block">Blue</small></div></div>
+                            <div class="col-4"><div class="color-swatch-item" data-color="Orange"><span class="swatch-circle" style="background:#f97316;"></span><small class="d-block">Orange</small></div></div>
+                            <div class="col-4"><div class="color-swatch-item" data-color="Green"><span class="swatch-circle" style="background:#22c55e;"></span><small class="d-block">Green</small></div></div>
+                            <div class="col-4"><div class="color-swatch-item" data-color="Brown"><span class="swatch-circle" style="background:#854d0e;"></span><small class="d-block">Brown</small></div></div>
+                            <div class="col-4"><div class="color-swatch-item" data-color="White"><span class="swatch-circle border" style="background:#fff;"></span><small class="d-block">White</small></div></div>
+                            <div class="col-4"><div class="color-swatch-item" data-color="Yellow"><span class="swatch-circle" style="background:#eab308;"></span><small class="d-block">Yellow</small></div></div>
+                            <div class="col-4"><div class="color-swatch-item" data-color="Red"><span class="swatch-circle" style="background:#ef4444;"></span><small class="d-block">Red</small></div></div>
+                            <div class="col-4"><div class="color-swatch-item" data-color="Grey"><span class="swatch-circle" style="background:#9ca3af;"></span><small class="d-block">Grey</small></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sort By Button -->
+            <div class="dropdown-filter-container position-relative">
+                <button class="btn px-4 py-2 text-white fw-bold dropdown-toggle-btn" data-dropdown="sort-dropdown" style="background-color: var(--color-primary); font-family: var(--font-sans);">
+                    Sort by <i class="bi bi-chevron-down ms-1"></i>
+                </button>
+                <div class="custom-dropdown-panel shadow-sm border rounded-3 p-2 bg-white" id="sort-dropdown" style="display: none; position: absolute; top: 110%; right: 0; z-index: 100; min-width: 180px;">
+                    <a href="#" class="dropdown-item py-2 sort-option" data-sort="featured">Featured</a>
+                    <a href="#" class="dropdown-item py-2 sort-option" data-sort="low-high">Price: Low to High</a>
+                    <a href="#" class="dropdown-item py-2 sort-option" data-sort="high-low">Price: High to Low</a>
+                    <a href="#" class="dropdown-item py-2 sort-option" data-sort="rating">Highest Rated</a>
+                    <a href="#" class="dropdown-item py-2 sort-option" data-sort="newest">Newest Arrivals</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         PRODUCT COLLECTION GRID (12 Products matching reference image)
+         ========================================================================== -->
+    <div class="product-grid" id="product-collection-grid">
+        {% if products %}
+            {% for product in products %}
+            <div class="product-card item-card" 
+                 data-style="{{ product.style_type|default:'Trainers' }}"
+                 data-brand="{{ product.brand|default:'Comfy Steps' }}"
+                 data-size="{{ product.sizes|default:'Adult UK(6)' }}"
+                 data-color="{{ product.colors|default:'Black, Brown' }}"
+                 data-price="{{ product.final_price }}"
+                 data-rating="{{ product.rating }}"
+                 data-id="{{ product.id }}">
+                
+                <div class="product-card-img-wrapper">
+                    {% if product.discount_percent %}
+                    <span class="product-discount-badge">-{{ product.discount_percent }}% OFF</span>
+                    {% endif %}
+                    <span class="product-brand-badge">{{ product.brand|default:product.category.name }}</span>
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-card-img">
+                    {% elif product.image_static %}
+                    <img src="{% static product.image_static %}" alt="{{ product.name }}" class="product-card-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80';">
+                    {% else %}
+                    <img src="{% static 'shoe/images/hero_mens.jpg' %}" alt="{{ product.name }}" class="product-card-img">
+                    {% endif %}
+                </div>
+
+                <div class="product-card-body">
+                    <div class="product-meta-row">
+                        <span class="product-category-tag">{{ product.category.name }}</span>
+                        <span class="product-rating-pill">
+                            <i class="bi bi-star-fill"></i> {{ product.rating }}
+                        </span>
+                    </div>
+
+                    <h3 class="product-card-title" title="{{ product.name }}">
+                        {{ product.name }}
+                    </h3>
+
+                    <div class="product-details-subline">
+                        <span class="product-style-pill">{{ product.style_type|default:"Shoes" }}</span>
+                        <div class="product-color-dots" title="Available Colors">
+                            <span class="product-color-dot" style="background:#111;"></span>
+                            <span class="product-color-dot" style="background:#854d0e;"></span>
+                            <span class="product-color-dot" style="background:#fff;"></span>
+                        </div>
+                    </div>
+
+                    <div class="product-price-row">
+                        <span class="product-current-price">₹{{ product.final_price }}</span>
+                        {% if product.discount_price %}
+                        <span class="product-original-price">₹{{ product.mrp_price }}</span>
+                        <span class="product-save-badge">Save ₹{{ product.discount_amount|default:"300" }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="product-action-row-dual">
+                        <a href="{% url 'product_detail' product.id %}" class="btn-card-detail">
+                            Buy Now
+                        </a>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn-card-cart-sm">
+                            <i class="bi bi-cart3"></i> Add
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted fs-5">No products found in this collection.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- No Products Found State -->
+    <div id="no-products-message" class="text-center py-5" style="display: none;">
+        <p class="text-muted fs-5">No products found. Try changing your filters.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Dropdown toggle logic
+    const dropdownBtns = document.querySelectorAll('.dropdown-toggle-btn');
+    dropdownBtns.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const targetId = this.getAttribute('data-dropdown');
+            const panel = document.getElementById(targetId);
+            
+            // Close all other panels
+            document.querySelectorAll('.custom-dropdown-panel').forEach(p => {
+                if (p !== panel) p.style.display = 'none';
+            });
+
+            if (panel) {
+                panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            }
+        });
+    });
+
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.custom-dropdown-panel').forEach(p => p.style.display = 'none');
+    });
+
+    document.querySelectorAll('.custom-dropdown-panel').forEach(panel => {
+        panel.addEventListener('click', e => e.stopPropagation());
+    });
+
+    // Client-side filtering & sorting logic
+    const checkboxes = document.querySelectorAll('.filter-checkbox');
+    const swatchItems = document.querySelectorAll('.color-swatch-item');
+    const sortOptions = document.querySelectorAll('.sort-option');
+    const productGrid = document.getElementById('product-collection-grid');
+    const noProductsMsg = document.getElementById('no-products-message');
+    
+    let selectedStyles = new Set(['All']);
+    let selectedSizes = new Set(['All']);
+    let selectedBrands = new Set(['All']);
+    let selectedColors = new Set();
+    let currentSort = 'featured';
+
+    function filterAndSortProducts() {
+        const cards = Array.from(document.querySelectorAll('.item-card'));
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const style = card.getAttribute('data-style');
+            const brand = card.getAttribute('data-brand');
+            const size = card.getAttribute('data-size');
+            const color = card.getAttribute('data-color');
+
+            const matchStyle = selectedStyles.has('All') || selectedStyles.has(style);
+            const matchSize = selectedSizes.has('All') || Array.from(selectedSizes).some(s => size.includes(s));
+            const matchBrand = selectedBrands.has('All') || selectedBrands.has(brand);
+            const matchColor = selectedColors.size === 0 || Array.from(selectedColors).some(c => color.includes(c));
+
+            if (matchStyle && matchSize && matchBrand && matchColor) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Sorting
+        const visibleCards = cards.filter(c => c.style.display === 'flex');
+        visibleCards.sort((a, b) => {
+            const priceA = parseFloat(a.getAttribute('data-price'));
+            const priceB = parseFloat(b.getAttribute('data-price'));
+            const ratingA = parseFloat(a.getAttribute('data-rating'));
+            const ratingB = parseFloat(b.getAttribute('data-rating'));
+            const idA = parseInt(a.getAttribute('data-id'));
+            const idB = parseInt(b.getAttribute('data-id'));
+
+            if (currentSort === 'low-high') return priceA - priceB;
+            if (currentSort === 'high-low') return priceB - priceA;
+            if (currentSort === 'rating') return ratingB - ratingA;
+            if (currentSort === 'newest') return idB - idA;
+            return idA - idB; // featured
+        });
+
+        visibleCards.forEach(card => productGrid.appendChild(card));
+
+        if (visibleCount === 0) {
+            noProductsMsg.style.display = 'block';
+        } else {
+            noProductsMsg.style.display = 'none';
+        }
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function () {
+            const val = this.value;
+            const id = this.id;
+            
+            if (id.includes('style')) {
+                if (val === 'All') {
+                    selectedStyles.clear();
+                    selectedStyles.add('All');
+                    document.querySelectorAll('[id^="style-"]:not(#style-all)').forEach(c => c.checked = false);
+                } else {
+                    selectedStyles.delete('All');
+                    document.getElementById('style-all').checked = false;
+                    if (this.checked) selectedStyles.add(val);
+                    else selectedStyles.delete(val);
+                    if (selectedStyles.size === 0) {
+                        selectedStyles.add('All');
+                        document.getElementById('style-all').checked = true;
+                    }
+                }
+            } else if (id.includes('size')) {
+                if (val === 'All') {
+                    selectedSizes.clear();
+                    selectedSizes.add('All');
+                    document.querySelectorAll('[id^="size-"]:not(#size-all)').forEach(c => c.checked = false);
+                } else {
+                    selectedSizes.delete('All');
+                    document.getElementById('size-all').checked = false;
+                    if (this.checked) selectedSizes.add(val);
+                    else selectedSizes.delete(val);
+                    if (selectedSizes.size === 0) {
+                        selectedSizes.add('All');
+                        document.getElementById('size-all').checked = true;
+                    }
+                }
+            } else if (id.includes('brand')) {
+                if (val === 'All') {
+                    selectedBrands.clear();
+                    selectedBrands.add('All');
+                    document.querySelectorAll('[id^="brand-"]:not(#brand-all)').forEach(c => c.checked = false);
+                } else {
+                    selectedBrands.delete('All');
+                    document.getElementById('brand-all').checked = false;
+                    if (this.checked) selectedBrands.add(val);
+                    else selectedBrands.delete(val);
+                    if (selectedBrands.size === 0) {
+                        selectedBrands.add('All');
+                        document.getElementById('brand-all').checked = true;
+                    }
+                }
+            }
+            filterAndSortProducts();
+        });
+    });
+
+    swatchItems.forEach(item => {
+        item.addEventListener('click', function () {
+            const col = this.getAttribute('data-color');
+            const circle = this.querySelector('.swatch-circle');
+            if (selectedColors.has(col)) {
+                selectedColors.delete(col);
+                circle.style.outline = 'none';
+            } else {
+                selectedColors.add(col);
+                circle.style.outline = '2px solid #000';
+            }
+            filterAndSortProducts();
+        });
+    });
+
+    sortOptions.forEach(opt => {
+        opt.addEventListener('click', function (e) {
+            e.preventDefault();
+            currentSort = this.getAttribute('data-sort');
+            filterAndSortProducts();
+            document.getElementById('sort-dropdown').style.display = 'none';
+        });
+    });
+});
+</script>
+{% endblock %}
